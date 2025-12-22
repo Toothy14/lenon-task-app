@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap"
+			rel="stylesheet"
+		/>
+
+		<title>Lenon's home page</title>
+
+		<script src="https://cdn.tailwindcss.com"></script>
+	</head>
+
+	<body class="font-[Roboto]">
+		<header
+			class="flex h-16 bg-blue-950 justify-between items-center px-4 text-white"
+		>
+			<!-- Left: Logo + Title -->
+			<div class="flex items-center gap-3">
+				<img
+					src="header-icons/home2.logo.png"
+					alt="Logo"
+					class="w-10 h-10 rounded-full"
+				/>
+				<h1 class="font-bold text-lg">Task Manager</h1>
+			</div>
+
+			<!-- Right: Admin Dashboard + Profile -->
+			<div class="flex items-center gap-3">
+				<span class="text-base">Admin Dashboard</span>
+				<img
+					src="header-icons/admin-profile.jpg"
+					alt="Profile"
+					class="w-10 h-10 rounded-full"
+				/>
+			</div>
+		</header>
+
+		<main class="p-6">
+			<div class="border-b">
+				<h1 class="font-bold">Assign New Task</h1>
+
+				<div>
+					<input class="border" type="text" placeholder="Enter new task.." />
+					<button>Add task</button>
+				</div>
+
+				<div>
+					<p>
+						Assign to:
+						<select name="" id="">
+							Select User
+						</select>
+					</p>
+				</div>
+			</div>
+		</main>
+	</body>
+</html>
