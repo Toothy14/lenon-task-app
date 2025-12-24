@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Admin Dashboard</title>
+	</head>
+	<body>
+		<main>
+			<section class="dashboard">
+				<h1>Task Manager</h1>
+
+				<section class="task-create">
+					<h2>Assign New Task</h2>
+
+					<form class="js-task-form">
+						<input
+							class="js-task-input"
+							type="text"
+							placeholder="Enter new task.."
+						/>
+						<select class="js-user-select">
+							<option value="">Select User</option>
+							<option value="Alf">Alf</option>
+							<option value="Princess">Princess</option>
+						</select>
+
+						<button class="js-add-button">Add Task</button>
+					</form>
+				</section>
+
+				<section class="js-task-list-section">
+					<h2>Task List</h2>
+
+					<ul class="task-list"></ul>
+				</section>
+			</section>
+		</main>
+
+		<script type="module" src="scripts/admin.js"></script>
+	</body>
+</html>
