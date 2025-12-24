@@ -38,12 +38,32 @@ function addTasks(event) {
 	renderTaskList();
 }
 
+let editTaskId = null; //stores the id of the task currently (being edited)
+
 //render the task list
 function renderTaskList() {
-	let taskListHTML = '';
+	let html = '';
 
 	taskList.forEach((task) => {
-		const html = `<li class="task">
+		if (task.id === editTaskId) {
+			//editable view
+			html += `
+			<li class="task">
+				<input type="text" class="edit-title" value="${task.title}" />
+				<select class="edit-user">
+					<option value="Alf" ${task.assignedTo === 'Alf' ? 'selected' : ''}>Alf</option>
+					<option value="Sister" ${
+						task.assignedTo === 'Sister' ? 'selected' : ''
+					}>Sister</option>
+				</select>
+				<button class="task-save" data-id="${task.id}">Save</button>
+				<button class="task-cancel" data-id="${task.id}">Cancel</button>
+				<button class="task-delete" data-id="${task.id}">Delete</button>
+			</li>
+		`;
+		} else {
+			//normal view
+			html += `<li class="task">
 							<h3>${task.title}</h3>
 							<p>Assigned to: ${task.assignedTo}</p>
 							<span data-status="pending">${task.status}</span>
@@ -53,27 +73,72 @@ function renderTaskList() {
 				data-id="${task.id}">
 				Delete
 			</button>
-						</li>`;
 
-		taskListHTML += html;
+			<button class="task-edit"
+			data-id="${task.id}">
+			Edit
+			</button>
+						</li>`;
+		}
 	});
 
-	document.querySelector('.task-list').innerHTML = taskListHTML;
+	document.querySelector('.task-list').innerHTML = html;
 }
 
-function deleteTask() {
+function controllers() {
 	//UL (taskListElement) = handles the children (buttons)
 	taskListElement.addEventListener('click', (event) => {
-		if (event.target.classList.contains('task-delete')) {
-			const id = Number(event.target.dataset.id);
+		const id = Number(event.target.dataset.id);
 
+		//Delete button
+		if (event.target.classList.contains('task-delete')) {
 			taskList = taskList.filter((task) => task.id !== id);
 			//Creates a new array and move the tasks to the new array except for the id or task that we deleted
 
 			renderTaskList();
 			//update the task list after changing the data
 		}
+
+		//Edit button
+		if (event.target.classList.contains('task-edit')) {
+			editTaskId = id; //set this 'id'(task) to edit mode
+			renderTaskList();
+			//update the task list after changing the data
+		}
+
+		//Cancel button
+		if (event.target.classList.contains('task-cancel')) {
+			editTaskId = null; //exit edit mode because null = no value
+			renderTaskList();
+			//update the task list after changing the data
+		}
+
+		//Save button
+		if (event.target.classList.contains('task-save')) {
+			//find the id that we want to save
+			const task = taskList.find((task) => task.id === id);
+			// --------------------------------------------------------
+			//grab new values from editable view
+
+			//to access the elements inside 'li' such as --
+			//edit-title, and edit-user
+			//basically, we need to go inside the 'li' first
+			const li = event.target.closest('li');
+
+			//what the user typed in the title input in editable view
+			const newTitle = li.querySelector('.edit-title').value;
+
+			//reads the new selected assigned user in editable view
+			const newUser = li.querySelector('.edit-user').value;
+
+			//update taskList
+			task.title = newTitle;
+			task.assignedTo = newUser;
+
+			editTaskId = null; //Exit edit mode
+
+			renderTaskList(); //update the page
+		}
 	});
 }
-
-deleteTask();
+controllers();
