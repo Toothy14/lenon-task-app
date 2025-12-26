@@ -1,11 +1,21 @@
 //Data
-let taskList = [
-	{
-		title: 'Clean the kitchen',
-		assignedTo: 'Alf',
-		status: 'pending',
-	},
-];
+let taskList = JSON.parse(localStorage.getItem('taskList'));
+
+if (!taskList) {
+	taskList = [
+		{
+			id: Date.now(),
+			title: 'Clean the kitchen',
+			assignedTo: 'Alf',
+			status: 'pending',
+		},
+	];
+}
+
+//Local Storage
+function saveToStorage() {
+	localStorage.setItem('taskList', JSON.stringify(taskList));
+}
 
 //DOM Elements
 const form = document.querySelector('.js-task-form'); //Form
@@ -21,7 +31,7 @@ form.addEventListener('submit', (event) => {
 function addTasks(event) {
 	event.preventDefault(); //prevents the default behavior of the browser (reloading automatically)
 
-	const taskTitle = inputElement.value;
+	const taskTitle = inputElement.value.trim();
 	const assignedUser = userSelect.value;
 
 	if (!taskTitle || !assignedUser) return;
@@ -34,7 +44,9 @@ function addTasks(event) {
 		assignedTo: assignedUser,
 		status: 'pending',
 	});
-	console.log(taskList);
+
+	form.reset(); //Clears the elements
+	saveToStorage();
 	renderTaskList();
 }
 
@@ -94,7 +106,7 @@ function controllers() {
 		if (event.target.classList.contains('task-delete')) {
 			taskList = taskList.filter((task) => task.id !== id);
 			//Creates a new array and move the tasks to the new array except for the id or task that we deleted
-
+			saveToStorage();
 			renderTaskList();
 			//update the task list after changing the data
 		}
@@ -136,9 +148,11 @@ function controllers() {
 			task.assignedTo = newUser;
 
 			editTaskId = null; //Exit edit mode
+			saveToStorage();
 
 			renderTaskList(); //update the page
 		}
 	});
 }
-controllers();
+controllers(); //Run the controllers
+renderTaskList(); //Render the task list
