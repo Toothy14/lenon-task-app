@@ -73,12 +73,14 @@ function renderTaskList() {
 				<button class="task-delete" data-id="${task.id}">Delete</button>
 			</li>
 		`;
-		} else {
-			//normal view
+		}
+
+		if (!task.proof) {
+			//if no proof yet
 			html += `<li class="task">
 							<h3>${task.title}</h3>
 							<p>Assigned to: ${task.assignedTo}</p>
-							<span data-status="pending">${task.status}</span>
+							<span data-status="pending">Status: ${task.status}</span>
 
 							<button
 				class="task-delete"
@@ -91,6 +93,17 @@ function renderTaskList() {
 			Edit
 			</button>
 						</li>`;
+		} else if (task.proof.status === 'pending') {
+			html += `<li class="task">
+			<h3>${task.title}</h3>
+			<p> <strong>Status:</strong> Submitted from <strong>${task.assignedTo}</strong> <p/>
+			<p><strong>Proof:</strong> ${task.proof.text}</p>
+
+			<button class="approve-button"
+			data-id="${task.id}"
+			>Approve</button>
+			<button class="reject-button">Reject</button>
+			</li>`;
 		}
 	});
 
@@ -152,6 +165,16 @@ function controllers() {
 
 			renderTaskList(); //update the page
 		}
+
+		if (event.target.classList.contains('approve-button')) {
+			const task = taskList.find((task) => task.id === id);
+			if (!task || !task.proof) return;
+
+			task.proof.status = 'approved';
+			saveToStorage();
+			renderTaskList();
+		}
+		console.log(taskList);
 	});
 }
 controllers(); //Run the controllers
