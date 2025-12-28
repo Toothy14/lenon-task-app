@@ -73,9 +73,7 @@ function renderTaskList() {
 				<button class="task-delete" data-id="${task.id}">Delete</button>
 			</li>
 		`;
-		}
-
-		if (!task.proof) {
+		} else if (!task.proof) {
 			//if no proof yet
 			html += `<li class="task">
 							<h3>${task.title}</h3>
@@ -102,7 +100,9 @@ function renderTaskList() {
 			<button class="approve-button"
 			data-id="${task.id}"
 			>Approve</button>
-			<button class="reject-button">Reject</button>
+			<button class="reject-button"
+			data-id="${task.id}"
+			>Reject</button>
 			</li>`;
 		}
 	});
@@ -174,7 +174,15 @@ function controllers() {
 			saveToStorage();
 			renderTaskList();
 		}
-		console.log(taskList);
+
+		if (event.target.classList.contains('reject-button')) {
+			const task = taskList.find((task) => task.id === id);
+			if (!task || !task.proof) return;
+
+			task.proof.status = 'rejected';
+			saveToStorage();
+			renderTaskList();
+		}
 	});
 }
 controllers(); //Run the controllers

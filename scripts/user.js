@@ -32,6 +32,16 @@ function renderUserTasks() {
 			html += `<li> <h3>${index + 1}. ${task.title}</h3>
             <p>Status: ${task.proof.status}</p>
             <p>Task completed! Great job!</p> </li>`;
+		} else if (task.proof.status === 'rejected') {
+			html += `<li>
+			<h3>${index + 1}. ${task.title}</h3>
+            <p>Status: ${task.proof.status}</p>
+
+			<input class="input-proof" type="text" placeholder="Enter proof.."></input>
+        <button class="submit-proof"
+        data-id="${task.id}"
+        >Submit Proof</button>
+			</li>`;
 		}
 	});
 	taskListElement.innerHTML = html;
@@ -60,4 +70,3 @@ taskListElement.addEventListener('click', (event) => {
 		renderUserTasks(); //re render
 	}
 });
-console.log(taskList);
