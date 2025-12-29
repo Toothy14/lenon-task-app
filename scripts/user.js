@@ -15,6 +15,7 @@ function renderUserTasks() {
 	userTasks.forEach((task, index) => {
 		if (!task.proof) {
 			html += `<li>
+			
         <h3>${task.title}</h3>
 
         <p>Status: ${task.status}</p> 
@@ -38,11 +39,14 @@ function renderUserTasks() {
 		} else if (task.proof.status === 'approved') {
 			html += `<li> <h3>${index + 1}. ${task.title}</h3>
             <p>Status: ${task.proof.status}</p>
+			<p>Approved on: ${task.reviewedDate}</p>
             <p>Task completed! Great job!</p> </li>`;
 		} else if (task.proof.status === 'rejected') {
 			html += `<li>
 			<h3>${index + 1}. ${task.title}</h3>
             <p>Status: ${task.proof.status}</p>
+			 <p>Rejected on: ${task.reviewedDate}</p>
+			 <p>Your proof: ${task.proof.text}</p>
 
 			<input class="input-proof" type="text" placeholder="Enter proof.."></input>
         <button class="submit-proof"
@@ -93,6 +97,9 @@ taskListElement.addEventListener('click', (event) => {
 
 		//add submitted date to local storage
 		task.submittedDate = dateFormat;
+
+		//review date becomes null, until the admin approve/reject again
+		task.reviewedDate = null;
 
 		//after adding, save it to local storage
 		saveToStorage();

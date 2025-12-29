@@ -115,6 +115,18 @@ function renderTaskList() {
 			data-id="${task.id}"
 			>Reject</button>
 			</li>`;
+		} else if (task.proof.status === 'approved') {
+			html += `<li>
+			<h3>${task.title}</h3>
+			<p> <strong>Status:</strong> Submitted from <strong>${task.assignedTo}</strong> <p/>
+			<label>Approved on: ${task.reviewedDate}</label>
+			</li>`;
+		} else if (task.proof.status === 'rejected') {
+			html += `<li>
+			<h3>${task.title}</h3>
+			<p> <strong>Status:</strong> Submitted from <strong>${task.assignedTo}</strong> <p/>
+			<label>Rejected on: ${task.reviewedDate}</label>
+			</li>`;
 		}
 	});
 
@@ -179,18 +191,29 @@ function controllers() {
 
 		if (event.target.classList.contains('approve-button')) {
 			const task = taskList.find((task) => task.id === id);
+
+			const today = dayjs();
+			const dateFormat = today.format('MMM M, YYYY • h:mm A');
+
 			if (!task || !task.proof) return;
 
 			task.proof.status = 'approved';
+			task.reviewedDate = dateFormat;
 			saveToStorage();
 			renderTaskList();
 		}
 
 		if (event.target.classList.contains('reject-button')) {
 			const task = taskList.find((task) => task.id === id);
+
+			const today = dayjs();
+			const dateFormat = today.format('MMM M, YYYY • h:mm A');
+
 			if (!task || !task.proof) return;
 
 			task.proof.status = 'rejected';
+			task.reviewedDate = dateFormat;
+
 			saveToStorage();
 			renderTaskList();
 		}
