@@ -34,6 +34,10 @@ function addTasks(event) {
 	const taskTitle = inputElement.value.trim();
 	const assignedUser = userSelect.value;
 
+	//Date today
+	const today = dayjs();
+	const dateFormat = today.format('MMM M, YYYY • h:mm A');
+
 	if (!taskTitle || !assignedUser) return;
 	//checks first if the taskTitle or assignedUser is empty
 
@@ -42,6 +46,7 @@ function addTasks(event) {
 		id: Date.now(),
 		title: taskTitle,
 		assignedTo: assignedUser,
+		assignedDate: dateFormat,
 		status: 'pending',
 	});
 
@@ -75,9 +80,14 @@ function renderTaskList() {
 		`;
 		} else if (!task.proof) {
 			//if no proof yet
+
 			html += `<li class="task">
 							<h3>${task.title}</h3>
+
 							<p>Assigned to: ${task.assignedTo}</p>
+
+							<label>Assigned on: ${task.assignedDate}</label>
+
 							<span data-status="pending">Status: ${task.status}</span>
 
 							<button
@@ -95,6 +105,7 @@ function renderTaskList() {
 			html += `<li class="task">
 			<h3>${task.title}</h3>
 			<p> <strong>Status:</strong> Submitted from <strong>${task.assignedTo}</strong> <p/>
+			<label>Submitted on: ${task.submittedDate}</label>
 			<p><strong>Proof:</strong> ${task.proof.text}</p>
 
 			<button class="approve-button"
