@@ -1,3 +1,6 @@
+import { getFormattedDate } from './utils/date.js';
+import { findTaskById } from './utils/findTaskById.js';
+
 //Data
 let taskList = JSON.parse(localStorage.getItem('taskList'));
 
@@ -18,35 +21,37 @@ function saveToStorage() {
 }
 
 //DOM Elements
-const form = document.querySelector('.js-task-form'); //Form
-const inputElement = document.querySelector('.js-task-input'); //Input
-const userSelect = document.querySelector('.js-user-select'); //Select
+
 const taskListElement = document.querySelector('.task-list'); //UL
 
+//Form
+const form = document.querySelector('.js-task-form');
 form.addEventListener('submit', (event) => {
 	addTasks(event);
 });
 
 //functions
+
+//add tasks
 function addTasks(event) {
 	event.preventDefault(); //prevents the default behavior of the browser (reloading automatically)
+
+	const inputElement = document.querySelector('.js-task-input'); //Input
+	const userSelect = document.querySelector('.js-user-select'); //Select
 
 	const taskTitle = inputElement.value.trim();
 	const assignedUser = userSelect.value;
 
-	//Date today
-	const today = dayjs();
-	const dateFormat = today.format('MMM M, YYYY • h:mm A');
-
-	if (!taskTitle || !assignedUser) return;
 	//checks first if the taskTitle or assignedUser is empty
+	if (!taskTitle || !assignedUser) return;
 
+	getFormattedDate();
 	//else if both are not empty
 	taskList.push({
 		id: Date.now(),
 		title: taskTitle,
 		assignedTo: assignedUser,
-		assignedDate: dateFormat,
+		assignedDate: getFormattedDate(),
 		status: 'pending',
 	});
 
@@ -164,7 +169,7 @@ function controllers() {
 		//Save button
 		if (event.target.classList.contains('task-save')) {
 			//find the id that we want to save
-			const task = taskList.find((task) => task.id === id);
+			const task = findTaskById(taskList, id);
 			// --------------------------------------------------------
 			//grab new values from editable view
 
@@ -190,29 +195,27 @@ function controllers() {
 		}
 
 		if (event.target.classList.contains('approve-button')) {
-			const task = taskList.find((task) => task.id === id);
+			const task = findTaskById(taskList, id);
 
-			const today = dayjs();
-			const dateFormat = today.format('MMM M, YYYY • h:mm A');
+			getFormattedDate();
 
 			if (!task || !task.proof) return;
 
 			task.proof.status = 'approved';
-			task.reviewedDate = dateFormat;
+			task.reviewedDate = getFormattedDate();
 			saveToStorage();
 			renderTaskList();
 		}
 
 		if (event.target.classList.contains('reject-button')) {
-			const task = taskList.find((task) => task.id === id);
+			const task = findTaskById(taskList, id);
 
-			const today = dayjs();
-			const dateFormat = today.format('MMM M, YYYY • h:mm A');
+			getFormattedDate();
 
 			if (!task || !task.proof) return;
 
 			task.proof.status = 'rejected';
-			task.reviewedDate = dateFormat;
+			task.reviewedDate = getFormattedDate();
 
 			saveToStorage();
 			renderTaskList();

@@ -1,3 +1,5 @@
+import { getFormattedDate } from './utils/date.js';
+
 let taskList = JSON.parse(localStorage.getItem('taskList')) || []; //Contains all of the tasks
 
 function saveToStorage() {
@@ -74,11 +76,7 @@ taskListElement.addEventListener('click', (event) => {
 		//use .trim() to prevent human typos
 		const proofText = input.value.trim();
 
-		//date today
-		const today = dayjs();
-
-		//date format
-		const dateFormat = today.format('MMM M, YYYY • h:mm A');
+		getFormattedDate();
 
 		//check if input has no value
 		if (!proofText) return;
@@ -96,7 +94,7 @@ taskListElement.addEventListener('click', (event) => {
 		};
 
 		//add submitted date to local storage
-		task.submittedDate = dateFormat;
+		task.submittedDate = getFormattedDate();
 
 		//review date becomes null, until the admin approve/reject again
 		task.reviewedDate = null;
