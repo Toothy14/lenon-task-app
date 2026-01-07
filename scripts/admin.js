@@ -21,9 +21,10 @@ function saveToStorage() {
 }
 
 //DOM Elements
-
-const taskListElement = document.querySelector('.task-list'); //UL
-
+const tasksContainer = document.querySelector('.tasks-container');
+const taskListElement = document.querySelector('.pending-list'); //UL
+const approvedListElement = document.querySelector('.approved-task-list'); //UL
+const rejectedListElement = document.querySelector('.rejected-task-list'); //UL
 //Form
 const form = document.querySelector('.js-task-form');
 form.addEventListener('submit', (event) => {
@@ -45,7 +46,6 @@ function addTasks(event) {
 	//checks first if the taskTitle or assignedUser is empty
 	if (!taskTitle || !assignedUser) return;
 
-	getFormattedDate();
 	//else if both are not empty
 	taskList.push({
 		id: Date.now(),
@@ -64,12 +64,14 @@ let editTaskId = null; //stores the id of the task currently (being edited)
 
 //render the task list
 function renderTaskList() {
-	let html = '';
+	let htmlPendingTasks = '';
+	let htmlApprovedTasks = '';
+	let htmlRejectedTasks = '';
 
 	taskList.forEach((task) => {
-		if (task.id === editTaskId) {
+		if (editTaskId !== null && task.id === editTaskId) {
 			//editable view
-			html += `
+			htmlPendingTasks += `
 			<li class="task">
 				<input type="text" class="edit-title" value="${task.title}" />
 				<select class="edit-user">
@@ -86,7 +88,7 @@ function renderTaskList() {
 		} else if (!task.proof) {
 			//if no proof yet
 
-			html += `<li class="task">
+			htmlPendingTasks += `<li class="task">
 							<h3>${task.title}</h3>
 
 							<p>Assigned to: ${task.assignedTo}</p>
@@ -107,7 +109,7 @@ function renderTaskList() {
 			</button>
 						</li>`;
 		} else if (task.proof.status === 'pending') {
-			html += `<li class="task">
+			htmlPendingTasks += `<li class="task">
 			<h3>${task.title}</h3>
 			<p> <strong>Status:</strong> Submitted from <strong>${task.assignedTo}</strong> <p/>
 			<label>Submitted on: ${task.submittedDate}</label>
@@ -120,14 +122,16 @@ function renderTaskList() {
 			data-id="${task.id}"
 			>Reject</button>
 			</li>`;
-		} else if (task.proof.status === 'approved') {
-			html += `<li>
+		}
+		//Reject/Approve Section
+		else if (task.proof.status === 'approved') {
+			htmlApprovedTasks += `<li>
 			<h3>${task.title}</h3>
 			<p> <strong>Status:</strong> Submitted from <strong>${task.assignedTo}</strong> <p/>
 			<label>Approved on: ${task.reviewedDate}</label>
 			</li>`;
 		} else if (task.proof.status === 'rejected') {
-			html += `<li>
+			htmlRejectedTasks += `<li>
 			<h3>${task.title}</h3>
 			<p> <strong>Status:</strong> Submitted from <strong>${task.assignedTo}</strong> <p/>
 			<label>Rejected on: ${task.reviewedDate}</label>
@@ -135,12 +139,14 @@ function renderTaskList() {
 		}
 	});
 
-	document.querySelector('.task-list').innerHTML = html;
+	taskListElement.innerHTML = htmlPendingTasks;
+	approvedListElement.innerHTML = htmlApprovedTasks;
+	rejectedListElement.innerHTML = htmlRejectedTasks;
 }
 
 function controllers() {
 	//UL (taskListElement) = handles the children (buttons)
-	taskListElement.addEventListener('click', (event) => {
+	tasksContainer.addEventListener('click', (event) => {
 		const id = Number(event.target.dataset.id);
 
 		//Delete button
@@ -170,6 +176,8 @@ function controllers() {
 		if (event.target.classList.contains('task-save')) {
 			//find the id that we want to save
 			const task = findTaskById(taskList, id);
+
+			if (!task) return;
 			// --------------------------------------------------------
 			//grab new values from editable view
 
@@ -197,8 +205,6 @@ function controllers() {
 		if (event.target.classList.contains('approve-button')) {
 			const task = findTaskById(taskList, id);
 
-			getFormattedDate();
-
 			if (!task || !task.proof) return;
 
 			task.proof.status = 'approved';
@@ -209,8 +215,6 @@ function controllers() {
 
 		if (event.target.classList.contains('reject-button')) {
 			const task = findTaskById(taskList, id);
-
-			getFormattedDate();
 
 			if (!task || !task.proof) return;
 

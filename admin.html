@@ -8,10 +8,11 @@
 	<body>
 		<main>
 			<section class="dashboard">
-				<h1>Task Manager</h1>
+				<h1>Lenon's Home</h1>
 				<a href="user.html">Back to User</a>
 
-				<section class="task-create">
+				<div class="tasks-container">
+					<section class="task-create">
 					<h2>Assign New Task</h2>
 
 					<form class="js-task-form">
@@ -31,17 +32,25 @@
 				</section>
 
 				<section class="js-task-list-section">
-					<h2>Pending Tasks</h2>
+					<h2>Pending</h2>
 
-					<ul class="task-list"></ul>
+					<ul class="pending-list"></ul>
 				</section>
 
 				<section class="js-task-list-section">
-					<h2>Task List</h2>
+					<h2>Approved</h2>
 
-					<ul class="pending-task-list"></ul>
+					<ul class="approved-task-list"></ul>
+				</section>
+
+				<section class="js-task-list-section">
+					<h2>Rejected</h2>
+
+					<ul class="rejected-task-list"></ul>
 				</section>
 			</section>
+				</div>
+				
 		</main>
 		<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 		<script type="module" src="scripts/admin.js"></script>

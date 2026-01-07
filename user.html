@@ -8,8 +8,23 @@
 	<body>
 		<h1>User Dashboard</h1>
 		<a href="admin.html">Back to admin</a>
-		<h2>Task List</h2>
-		<ul class="task-list"></ul>
+
+		<div class="tasks-container">
+			<section class="pending-list-section">
+				<h2>Pending</h2>
+				<ul class="pending-list"></ul>
+			</section>
+
+			<section class="approved-list-section">
+				<h2>Approved</h2>
+				<ul class="approved-list"></ul>
+			</section>
+
+			<section class="rejected-list-section">
+				<h2>Rejected</h2>
+				<ul class="rejected-list"></ul>
+			</section>
+		</div>
 
 		<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 		<script type="module" src="scripts/user.js"></script>

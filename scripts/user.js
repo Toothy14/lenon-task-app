@@ -1,4 +1,5 @@
 import { getFormattedDate } from './utils/date.js';
+import { findTaskById } from './utils/findTaskById.js';
 
 let taskList = JSON.parse(localStorage.getItem('taskList')) || []; //Contains all of the tasks
 
@@ -7,16 +8,20 @@ function saveToStorage() {
 }
 
 const currentUser = 'Alf';
-
-const taskListElement = document.querySelector('.task-list');
+const tasksContainer = document.querySelector('.tasks-container');
+const taskListElement = document.querySelector('.pending-list');
+const approvedListElement = document.querySelector('.approved-list');
+const rejectedListElement = document.querySelector('.rejected-list');
 
 function renderUserTasks() {
 	const userTasks = taskList.filter((task) => task.assignedTo === currentUser);
-	let html = '';
+	let htmlPendingTasks = '';
+	let htmlApprovedTasks = '';
+	let htmlRejectedTasks = '';
 
-	userTasks.forEach((task, index) => {
+	userTasks.forEach((task) => {
 		if (!task.proof) {
-			html += `<li>
+			htmlPendingTasks += `<li>
 			
         <h3>${task.title}</h3>
 
@@ -32,20 +37,20 @@ function renderUserTasks() {
         </li>
         `;
 		} else if (task.proof.status === 'pending') {
-			html += `<li>
-                <h3>${index + 1}. ${task.title}</h3>
+			htmlPendingTasks += `<li>
+                <h3>${task.title}</h3>
                 <p>Proof submitted (Pending review)</p>
 				<label>Submitted on: ${task.submittedDate}</label>
                 <p>Proof: ${task.proof.text}</p></li>
             `;
 		} else if (task.proof.status === 'approved') {
-			html += `<li> <h3>${index + 1}. ${task.title}</h3>
+			htmlApprovedTasks += `<li> <h3>${task.title}</h3>
             <p>Status: ${task.proof.status}</p>
 			<p>Approved on: ${task.reviewedDate}</p>
             <p>Task completed! Great job!</p> </li>`;
 		} else if (task.proof.status === 'rejected') {
-			html += `<li>
-			<h3>${index + 1}. ${task.title}</h3>
+			htmlRejectedTasks += `<li>
+			<h3>${task.title}</h3>
             <p>Status: ${task.proof.status}</p>
 			 <p>Rejected on: ${task.reviewedDate}</p>
 			 <p>Your proof: ${task.proof.text}</p>
@@ -57,12 +62,14 @@ function renderUserTasks() {
 			</li>`;
 		}
 	});
-	taskListElement.innerHTML = html;
+	taskListElement.innerHTML = htmlPendingTasks;
+	approvedListElement.innerHTML = htmlApprovedTasks;
+	rejectedListElement.innerHTML = htmlRejectedTasks;
 }
 
 renderUserTasks();
 
-taskListElement.addEventListener('click', (event) => {
+tasksContainer.addEventListener('click', (event) => {
 	if (event.target.classList.contains('submit-proof')) {
 		//id of task we want to submit proof
 		const id = Number(event.target.dataset.id);
@@ -76,13 +83,11 @@ taskListElement.addEventListener('click', (event) => {
 		//use .trim() to prevent human typos
 		const proofText = input.value.trim();
 
-		getFormattedDate();
-
 		//check if input has no value
 		if (!proofText) return;
 
 		//find the id we want to submit proof
-		const task = taskList.find((task) => task.id === id);
+		const task = findTaskById(taskList, id);
 
 		//check if the id is not there
 		if (!task) return;
