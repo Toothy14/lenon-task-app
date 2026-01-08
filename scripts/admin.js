@@ -1,24 +1,9 @@
 import { getFormattedDate } from './utils/date.js';
 import { findTaskById } from './utils/findTaskById.js';
+import { saveTasks, loadTasks } from './utils/storage.js';
 
-//Data
-let taskList = JSON.parse(localStorage.getItem('taskList'));
-
-if (!taskList) {
-	taskList = [
-		{
-			id: Date.now(),
-			title: 'Clean the kitchen',
-			assignedTo: 'Alf',
-			status: 'pending',
-		},
-	];
-}
-
-//Local Storage
-function saveToStorage() {
-	localStorage.setItem('taskList', JSON.stringify(taskList));
-}
+//Local storage
+let taskList = loadTasks();
 
 //DOM Elements
 const tasksContainer = document.querySelector('.tasks-container');
@@ -56,7 +41,7 @@ function addTasks(event) {
 	});
 
 	form.reset(); //Clears the elements
-	saveToStorage();
+	saveTasks(taskList);
 	renderTaskList();
 }
 
@@ -153,7 +138,7 @@ function controllers() {
 		if (event.target.classList.contains('task-delete')) {
 			taskList = taskList.filter((task) => task.id !== id);
 			//Creates a new array and move the tasks to the new array except for the id or task that we deleted
-			saveToStorage();
+			saveTasks(taskList);
 			renderTaskList();
 			//update the task list after changing the data
 		}
@@ -197,7 +182,7 @@ function controllers() {
 			task.assignedTo = newUser;
 
 			editTaskId = null; //Exit edit mode
-			saveToStorage();
+			saveTasks(taskList);
 
 			renderTaskList(); //update the page
 		}
@@ -209,7 +194,7 @@ function controllers() {
 
 			task.proof.status = 'approved';
 			task.reviewedDate = getFormattedDate();
-			saveToStorage();
+			saveTasks(taskList);
 			renderTaskList();
 		}
 
@@ -221,7 +206,7 @@ function controllers() {
 			task.proof.status = 'rejected';
 			task.reviewedDate = getFormattedDate();
 
-			saveToStorage();
+			saveTasks(taskList);
 			renderTaskList();
 		}
 	});

@@ -1,11 +1,8 @@
 import { getFormattedDate } from './utils/date.js';
 import { findTaskById } from './utils/findTaskById.js';
+import { saveTasks, loadTasks } from './utils/storage.js';
 
-let taskList = JSON.parse(localStorage.getItem('taskList')) || []; //Contains all of the tasks
-
-function saveToStorage() {
-	localStorage.setItem('taskList', JSON.stringify(taskList));
-}
+let taskList = loadTasks(); //Contains all of the tasks
 
 const currentUser = 'Alf';
 const tasksContainer = document.querySelector('.tasks-container');
@@ -105,7 +102,7 @@ tasksContainer.addEventListener('click', (event) => {
 		task.reviewedDate = null;
 
 		//after adding, save it to local storage
-		saveToStorage();
+		saveTasks(taskList);
 
 		//re-render the updated data
 		renderUserTasks();
