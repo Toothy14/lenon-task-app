@@ -1,6 +1,7 @@
 import { getFormattedDate } from './utils/date.js';
 import { findTaskById } from './utils/findTaskById.js';
 import { saveTasks, loadTasks } from './utils/storage.js';
+import { approveTask, rejectTask } from './utils/taskService.js';
 
 //Local storage
 let taskList = loadTasks();
@@ -188,25 +189,12 @@ function controllers() {
 		}
 
 		if (event.target.classList.contains('approve-button')) {
-			const task = findTaskById(taskList, id);
-
-			if (!task || !task.proof) return;
-
-			task.proof.status = 'approved';
-			task.reviewedDate = getFormattedDate();
-			saveTasks(taskList);
+			approveTask(taskList, id);
 			renderTaskList();
 		}
 
 		if (event.target.classList.contains('reject-button')) {
-			const task = findTaskById(taskList, id);
-
-			if (!task || !task.proof) return;
-
-			task.proof.status = 'rejected';
-			task.reviewedDate = getFormattedDate();
-
-			saveTasks(taskList);
+			rejectTask(taskList, id);
 			renderTaskList();
 		}
 	});
