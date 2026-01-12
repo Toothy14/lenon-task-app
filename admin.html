@@ -3,56 +3,75 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<!-- Tailwind (browser version – OK for now) -->
+		<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
 		<title>Admin Dashboard</title>
 	</head>
-	<body>
-		<main>
-			<section class="dashboard">
-				<h1>Lenon's Home</h1>
-				<a href="user.html">Back to User</a>
 
-				<div class="tasks-container">
-					<section class="task-create">
-					<h2>Assign New Task</h2>
-
-					<form class="js-task-form">
-						<input
-							class="js-task-input"
-							type="text"
-							placeholder="Enter new task.."
-						/>
-						<select class="js-user-select">
-							<option value="">Select User</option>
-							<option value="Alf">Alf</option>
-							<option value="Princess">Princess</option>
-						</select>
-
-						<button class="js-add-button">Add Task</button>
-					</form>
-				</section>
-
-				<section class="js-task-list-section">
-					<h2>Pending</h2>
-
-					<ul class="pending-list"></ul>
-				</section>
-
-				<section class="js-task-list-section">
-					<h2>Approved</h2>
-
-					<ul class="approved-task-list"></ul>
-				</section>
-
-				<section class="js-task-list-section">
-					<h2>Rejected</h2>
-
-					<ul class="rejected-task-list"></ul>
-				</section>
-			</section>
+	<body class="bg-gray-100 min-h-screen">
+		<main class="max-w-6xl mx-auto p-6">
+			<section class="dashboard space-y-8">
+				<!-- Header -->
+				<div class="flex justify-between items-center">
+					<h1 class="text-2xl font-bold text-gray-800">Lenon's Home</h1>
+					<a href="user.html" class="text-blue-600 hover:underline">
+						Back to User
+					</a>
 				</div>
-				
+
+				<!-- Tasks Container -->
+				<div class="tasks-container grid gap-8">
+					<!-- Create Task -->
+					<section class="task-create bg-white rounded-xl shadow p-6">
+						<h2 class="text-lg font-semibold mb-4">Assign New Task</h2>
+
+						<form class="js-task-form flex flex-col md:flex-row gap-3">
+							<input
+								class="js-task-input flex-1 border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
+								type="text"
+								placeholder="Enter new task.."
+							/>
+
+							<select
+								class="js-user-select border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
+							>
+								<option value="">Select User</option>
+								<option value="Alf">Alf</option>
+								<option value="Princess">Princess</option>
+							</select>
+
+							<button
+								class="js-add-button bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition"
+							>
+								Add Task
+							</button>
+						</form>
+					</section>
+
+					<!-- Pending -->
+					<section class="bg-white rounded-xl shadow p-6">
+						<h2 class="text-lg font-semibold mb-4 text-yellow-600">Pending</h2>
+						<ul class="pending-list space-y-4"></ul>
+					</section>
+
+					<!-- Approved -->
+					<section class="bg-white rounded-xl shadow p-6">
+						<h2 class="text-lg font-semibold mb-4 text-green-600">Approved</h2>
+						<ul class="approved-task-list space-y-4"></ul>
+					</section>
+
+					<!-- Rejected -->
+					<section class="bg-white rounded-xl shadow p-6">
+						<h2 class="text-lg font-semibold mb-4 text-red-600">Rejected</h2>
+						<ul class="rejected-task-list space-y-4"></ul>
+					</section>
+				</div>
+			</section>
 		</main>
-		<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+
+		<script src="https://unpkg.com/dayjs@1/dayjs.min.js"></script>
 		<script type="module" src="scripts/admin.js"></script>
 	</body>
 </html>

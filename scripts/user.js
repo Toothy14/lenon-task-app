@@ -18,45 +18,65 @@ function renderUserTasks() {
 
 	userTasks.forEach((task) => {
 		if (!task.proof) {
-			htmlPendingTasks += `<li>
-			
-        <h3>${task.title}</h3>
+			htmlPendingTasks += `
+<li class="bg-gray-50 border rounded-lg p-4 space-y-2">
+	<h3 class="font-semibold text-gray-800">${task.title}</h3>
 
-        <p>Status: ${task.status}</p> 
+	<p class="text-sm text-gray-600">Status: ${task.status}</p>
+	<p class="text-sm text-gray-500">Assigned on: ${task.assignedDate}</p>
 
-		<label>Assigned on: ${task.assignedDate}</label>
+	<input
+		class="input-proof w-full border rounded-md p-2 text-sm focus:outline-none focus:ring focus:ring-blue-300"
+		type="text"
+		placeholder="Enter proof..."
+	/>
 
-		<input class="input-proof" type="text" placeholder="Enter proof.."></input>
-
-        <button class="submit-proof"
-        data-id="${task.id}"
-        >Submit</button>
-        </li>
-        `;
+	<button
+		class="submit-proof bg-blue-500 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-600"
+		data-id="${task.id}"
+	>
+		Submit Proof
+	</button>
+</li>
+`;
 		} else if (task.proof.status === 'pending') {
-			htmlPendingTasks += `<li>
-                <h3>${task.title}</h3>
-                <p>Proof submitted (Pending review)</p>
-				<label>Submitted on: ${task.submittedDate}</label>
-                <p>Proof: ${task.proof.text}</p></li>
-            `;
+			htmlPendingTasks += `
+<li class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 space-y-2">
+	<h3 class="font-semibold">${task.title}</h3>
+	<p class="text-sm text-yellow-700">Proof submitted (Pending review)</p>
+	<p class="text-sm text-gray-500">Submitted on: ${task.submittedDate}</p>
+	<p class="text-sm"><strong>Proof:</strong> ${task.proof.text}</p>
+</li>
+`;
 		} else if (task.proof.status === 'approved') {
-			htmlApprovedTasks += `<li> <h3>${task.title}</h3>
-            <p>Status: ${task.proof.status}</p>
-			<p>Approved on: ${task.reviewedDate}</p>
-            <p>Task completed! Great job!</p> </li>`;
+			htmlApprovedTasks += `
+<li class="bg-green-50 border border-green-200 rounded-lg p-4 space-y-2">
+	<h3 class="font-semibold">${task.title}</h3>
+	<p class="text-sm text-green-700">Approved on: ${task.reviewedDate}</p>
+	<p class="text-sm text-gray-600">Task completed! 🎉</p>
+</li>
+`;
 		} else if (task.proof.status === 'rejected') {
-			htmlRejectedTasks += `<li>
-			<h3>${task.title}</h3>
-            <p>Status: ${task.proof.status}</p>
-			 <p>Rejected on: ${task.reviewedDate}</p>
-			 <p>Your proof: ${task.proof.text}</p>
+			htmlRejectedTasks += `
+<li class="bg-red-50 border border-red-200 rounded-lg p-4 space-y-2">
+	<h3 class="font-semibold">${task.title}</h3>
+	<p class="text-sm text-red-700">Rejected on: ${task.reviewedDate}</p>
+	<p class="text-sm"><strong>Your proof:</strong> ${task.proof.text}</p>
 
-			<input class="input-proof" type="text" placeholder="Enter proof.."></input>
-        <button class="submit-proof"
-        data-id="${task.id}"
-        >Submit Proof</button>
-			</li>`;
+	<input
+		class="input-proof w-full border rounded-md p-2 text-sm focus:outline-none focus:ring focus:ring-red-300"
+		type="text"
+		placeholder="Submit new proof..."
+	/>
+
+	<button
+		class="submit-proof bg-red-500 text-white px-4 py-2 rounded-md text-sm hover:bg-red-600"
+		data-id="${task.id}"
+	>
+		Resubmit Proof
+	</button>
+</li>
+`;
 		}
 	});
 	taskListElement.innerHTML = htmlPendingTasks;

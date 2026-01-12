@@ -57,71 +57,111 @@ function renderTaskList() {
 	taskList.forEach((task) => {
 		if (editTaskId !== null && task.id === editTaskId) {
 			//editable view
+
+			//PLEASE STUDY THE TAILWIND CSS YOU PUT
 			htmlPendingTasks += `
-			<li class="task">
-				<input type="text" class="edit-title" value="${task.title}" />
-				<select class="edit-user">
-					<option value="Alf" ${task.assignedTo === 'Alf' ? 'selected' : ''}>Alf</option>
-					<option value="Sister" ${
-						task.assignedTo === 'Sister' ? 'selected' : ''
-					}>Sister</option>
-				</select>
-				<button class="task-save" data-id="${task.id}">Save</button>
-				<button class="task-cancel" data-id="${task.id}">Cancel</button>
-				<button class="task-delete" data-id="${task.id}">Delete</button>
-			</li>
-		`;
+<li class="bg-white rounded-xl border shadow-sm p-4 space-y-3">
+	<input
+		type="text"
+		class="edit-title w-full border rounded-md px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+		value="${task.title}"
+	/>
+
+	<select
+		class="edit-user w-full border rounded-md px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+	>
+		<option value="Alf" ${task.assignedTo === 'Alf' ? 'selected' : ''}>Alf</option>
+		<option value="Sister" ${
+			task.assignedTo === 'Sister' ? 'selected' : ''
+		}>Sister</option>
+	</select>
+
+	<div class="flex gap-2">
+		<button class="task-save bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600" data-id="${
+			task.id
+		}">
+			Save
+		</button>
+		<button class="task-cancel bg-gray-300 px-3 py-1 rounded-md hover:bg-gray-400" data-id="${
+			task.id
+		}">
+			Cancel
+		</button>
+		<button class="task-delete bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 ml-auto" data-id="${
+			task.id
+		}">
+			Delete
+		</button>
+	</div>
+</li>
+`;
 		} else if (!task.proof) {
 			//if no proof yet
 
-			htmlPendingTasks += `<li class="task">
-							<h3>${task.title}</h3>
+			htmlPendingTasks += `
+<li class="bg-white rounded-xl border shadow-sm p-4 space-y-2">
+	<h3 class="font-semibold text-lg">${task.title}</h3>
 
-							<p>Assigned to: ${task.assignedTo}</p>
+	<p class="text-sm text-gray-600">Assigned to: <strong>${task.assignedTo}</strong></p>
+	<p class="text-sm text-gray-500">Assigned on: ${task.assignedDate}</p>
 
-							<label>Assigned on: ${task.assignedDate}</label>
+	<span class="inline-block text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">
+		Pending
+	</span>
 
-							<span data-status="pending">Status: ${task.status}</span>
-
-							<button
-				class="task-delete"
-				data-id="${task.id}">
-				Delete
-			</button>
-
-			<button class="task-edit"
-			data-id="${task.id}">
+	<div class="flex gap-2 pt-2">
+		<button class="task-edit bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600" data-id="${task.id}">
 			Edit
-			</button>
-						</li>`;
+		</button>
+		<button class="task-delete bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600" data-id="${task.id}">
+			Delete
+		</button>
+	</div>
+</li>
+`;
 		} else if (task.proof.status === 'pending') {
-			htmlPendingTasks += `<li class="task">
-			<h3>${task.title}</h3>
-			<p> <strong>Status:</strong> Submitted from <strong>${task.assignedTo}</strong> <p/>
-			<label>Submitted on: ${task.submittedDate}</label>
-			<p><strong>Proof:</strong> ${task.proof.text}</p>
+			htmlPendingTasks += `
+<li class="bg-white rounded-xl border shadow-sm p-4 space-y-2">
+	<h3 class="font-semibold text-lg">${task.title}</h3>
 
-			<button class="approve-button"
-			data-id="${task.id}"
-			>Approve</button>
-			<button class="reject-button"
-			data-id="${task.id}"
-			>Reject</button>
-			</li>`;
+	<p class="text-sm">
+		<strong>Status:</strong> Submitted by <strong>${task.assignedTo}</strong>
+	</p>
+
+	<p class="text-sm text-gray-500">Submitted on: ${task.submittedDate}</p>
+
+	<p class="text-sm bg-gray-100 p-2 rounded">
+		<strong>Proof:</strong> ${task.proof.text}
+	</p>
+
+	<div class="flex gap-2 pt-2">
+		<button class="approve-button bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600" data-id="${task.id}">
+			Approve
+		</button>
+		<button class="reject-button bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600" data-id="${task.id}">
+			Reject
+		</button>
+	</div>
+</li>
+`;
 		}
 		//Reject/Approve Section
 		else if (task.proof.status === 'approved') {
-			htmlApprovedTasks += `<li>
-			<h3>${task.title}</h3>
-			<p> <strong>Status:</strong> Submitted from <strong>${task.assignedTo}</strong> <p/>
-			<label>Approved on: ${task.reviewedDate}</label>
-			</li>`;
+			htmlApprovedTasks += `
+<li class="bg-green-50 rounded-xl border border-green-200 p-4 space-y-2">
+	<h3 class="font-semibold text-lg">${task.title}</h3>
+	<p class="text-sm">Approved for <strong>${task.assignedTo}</strong></p>
+	<p class="text-sm text-gray-600">Approved on: ${task.reviewedDate}</p>
+</li>
+`;
 		} else if (task.proof.status === 'rejected') {
-			htmlRejectedTasks += `<li>
-			<h3>${task.title}</h3>
-			<p> <strong>Status:</strong> Submitted from <strong>${task.assignedTo}</strong> <p/>
-			<label>Rejected on: ${task.reviewedDate}</label>
-			</li>`;
+			htmlRejectedTasks += `
+<li class="bg-red-50 rounded-xl border border-red-200 p-4 space-y-2">
+	<h3 class="font-semibold text-lg">${task.title}</h3>
+	<p class="text-sm">Rejected for <strong>${task.assignedTo}</strong></p>
+	<p class="text-sm text-gray-600">Rejected on: ${task.reviewedDate}</p>
+</li>
+`;
 		}
 	});
 
