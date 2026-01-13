@@ -9,10 +9,15 @@
 	<body class="bg-gray-100 min-h-screen">
 		<main class="max-w-6xl mx-auto p-6 space-y-6">
 			<header class="flex justify-between items-center">
-				<h1 class="text-2xl font-bold">Alf's Dashboard</h1>
+				<h1 class="text-2xl font-bold">User's Dashboard</h1>
 				<a href="admin.html" class="text-sm text-blue-600 hover:underline"
 					>Back to Admin</a
 				>
+				<select class="js-user-switch">
+					<option value="">Logged out</option>
+					<option value="Alf">Alf</option>
+					<option value="Princess">Princess</option>
+				</select>
 			</header>
 
 			<div class="tasks-container grid grid-cols-1 md:grid-cols-3 gap-6">

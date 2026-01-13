@@ -71,9 +71,9 @@ function renderTaskList() {
 		class="edit-user w-full border rounded-md px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
 	>
 		<option value="Alf" ${task.assignedTo === 'Alf' ? 'selected' : ''}>Alf</option>
-		<option value="Sister" ${
-			task.assignedTo === 'Sister' ? 'selected' : ''
-		}>Sister</option>
+		<option value="Princess" ${
+			task.assignedTo === 'Princess' ? 'selected' : ''
+		}>Princess</option>
 	</select>
 
 	<div class="flex gap-2">

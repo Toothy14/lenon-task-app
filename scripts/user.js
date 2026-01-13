@@ -2,9 +2,28 @@ import { getFormattedDate } from './utils/date.js';
 import { findTaskById } from './utils/findTaskById.js';
 import { saveTasks, loadTasks } from './utils/storage.js';
 
-let taskList = loadTasks(); //Contains all of the tasks
+let taskList = loadTasks(); //Contains all of the tasks (local storage)
 
-const currentUser = 'Alf';
+//Temporary users log in logic ------------------------------------------
+const currentUser = localStorage.getItem('currentUser');
+
+if (!currentUser) {
+	alert('No user logged in');
+}
+
+const userSwitch = document.querySelector('.js-user-switch');
+
+if (userSwitch) {
+	if (currentUser) {
+		userSwitch.value = currentUser;
+	}
+	userSwitch.addEventListener('change', () => {
+		localStorage.setItem('currentUser', userSwitch.value);
+		location.reload();
+	});
+}
+//Temporary users log in logic ---------------------------------------------
+
 const tasksContainer = document.querySelector('.tasks-container');
 const taskListElement = document.querySelector('.pending-list');
 const approvedListElement = document.querySelector('.approved-list');
