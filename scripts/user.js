@@ -1,15 +1,10 @@
-import { getFormattedDate } from './utils/date.js';
-import { findTaskById } from './utils/findTaskById.js';
-import { saveTasks, loadTasks } from './utils/storage.js';
+import { loadTasks } from './utils/storage.js';
+import { submitProof } from './utils/taskService.js';
+import { setCurrentUser, getCurrentUser } from './utils/userService.js';
 
 let taskList = loadTasks(); //Contains all of the tasks (local storage)
 
-//Temporary users log in logic ------------------------------------------
-const currentUser = localStorage.getItem('currentUser');
-
-if (!currentUser) {
-	alert('No user logged in');
-}
+const currentUser = getCurrentUser(); //user state (Data)
 
 const userSwitch = document.querySelector('.js-user-switch');
 
@@ -18,11 +13,12 @@ if (userSwitch) {
 		userSwitch.value = currentUser;
 	}
 	userSwitch.addEventListener('change', () => {
-		localStorage.setItem('currentUser', userSwitch.value);
-		location.reload();
+		const selectedUser = userSwitch.value;
+		setCurrentUser(selectedUser);
+
+		location.reload(); //reload the browser
 	});
 }
-//Temporary users log in logic ---------------------------------------------
 
 const tasksContainer = document.querySelector('.tasks-container');
 const taskListElement = document.querySelector('.pending-list');
@@ -106,44 +102,25 @@ function renderUserTasks() {
 renderUserTasks();
 
 tasksContainer.addEventListener('click', (event) => {
-	if (event.target.classList.contains('submit-proof')) {
-		//id of task we want to submit proof
-		const id = Number(event.target.dataset.id);
+	if (!event.target.classList.contains('submit-proof')) return;
+	//id of task we want to submit proof
+	const id = Number(event.target.dataset.id);
 
-		//go inside the li
-		const li = event.target.closest('li');
+	//go inside the li
+	const li = event.target.closest('li');
 
-		//to access its element like input element
-		const input = li.querySelector('.input-proof');
+	//to access its element like input element
+	const input = li.querySelector('.input-proof');
 
-		//use .trim() to prevent human typos
-		const proofText = input.value.trim();
+	//use .trim() to prevent human typos
+	const proofText = input.value.trim();
 
-		//check if input has no value
-		if (!proofText) return;
+	//check if input has no value
+	if (!proofText) return;
 
-		//find the id we want to submit proof
-		const task = findTaskById(taskList, id);
+	//submit proof logic
+	submitProof(taskList, id, proofText);
 
-		//check if the id is not there
-		if (!task) return;
-
-		//add the objects to local storage
-		task.proof = {
-			text: proofText,
-			status: 'pending',
-		};
-
-		//add submitted date to local storage
-		task.submittedDate = getFormattedDate();
-
-		//review date becomes null, until the admin approve/reject again
-		task.reviewedDate = null;
-
-		//after adding, save it to local storage
-		saveTasks(taskList);
-
-		//re-render the updated data
-		renderUserTasks();
-	}
+	//re-render the updated data
+	renderUserTasks();
 });

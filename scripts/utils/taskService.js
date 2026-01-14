@@ -22,3 +22,26 @@ export function rejectTask(taskList, id) {
 
 	saveTasks(taskList);
 }
+
+export function submitProof(taskList, id, proofText) {
+	//find the id we want to submit proof
+	const task = findTaskById(taskList, id);
+
+	//check if the id is not there
+	if (!task) return;
+
+	//add the objects to local storage
+	task.proof = {
+		text: proofText,
+		status: 'pending',
+	};
+
+	//add submitted date to local storage
+	task.submittedDate = getFormattedDate();
+
+	//review date becomes null, until the admin approve/reject again
+	task.reviewedDate = null;
+
+	//after adding, save it to local storage
+	saveTasks(taskList);
+}
