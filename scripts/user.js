@@ -9,6 +9,7 @@ const currentUser = getCurrentUser(); //user state (Data)
 
 const userSwitch = document.querySelector('.js-user-switch');
 
+//user switch logic
 if (userSwitch) {
 	if (currentUser) {
 		userSwitch.value = currentUser;

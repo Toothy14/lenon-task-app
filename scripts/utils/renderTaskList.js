@@ -22,11 +22,11 @@ export function renderTaskList(taskList, editTaskId) {
 	/>
 
 	<select
-		class="edit-user w-full border rounded-md px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+		class="edit-user w-full border rounded-md px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200" multiple
 	>
-		<option value="Alf" ${task.assignedTo === 'Alf' ? 'selected' : ''}>Alf</option>
+		<option value="Alf" ${task.assignedTo.includes('Alf') ? 'selected' : ''}>Alf</option>
 		<option value="Princess" ${
-			task.assignedTo === 'Princess' ? 'selected' : ''
+			task.assignedTo.includes('Princess') ? 'selected' : ''
 		}>Princess</option>
 	</select>
 
@@ -56,7 +56,7 @@ export function renderTaskList(taskList, editTaskId) {
 <li class="bg-white rounded-xl border shadow-sm p-4 space-y-2">
 	<h3 class="font-semibold text-lg">${task.title}</h3>
 
-	<p class="text-sm text-gray-600">Assigned to: <strong>${task.assignedTo}</strong></p>
+	<p class="text-sm text-gray-600">Assigned to: <strong>${task.assignedTo.join(',')}</strong></p>
 	<p class="text-sm text-gray-500">Assigned on: ${task.assignedDate}</p>
 
 	<span class="inline-block text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">
@@ -79,7 +79,7 @@ export function renderTaskList(taskList, editTaskId) {
 	<h3 class="font-semibold text-lg">${task.title}</h3>
 
 	<p class="text-sm">
-		<strong>Status:</strong> Submitted by <strong>${task.assignedTo}</strong>
+		<strong>Status:</strong> Submitted by <strong>${task.assignedTo.join(',')}</strong>
 	</p>
 
 	<p class="text-sm text-gray-500">Submitted on: ${task.submittedDate}</p>
@@ -104,7 +104,7 @@ export function renderTaskList(taskList, editTaskId) {
 			htmlApprovedTasks += `
 <li class="bg-green-50 rounded-xl border border-green-200 p-4 space-y-2">
 	<h3 class="font-semibold text-lg">${task.title}</h3>
-	<p class="text-sm">Approved for <strong>${task.assignedTo}</strong></p>
+	<p class="text-sm">Approved for <strong>${task.assignedTo.join(',')}</strong></p>
 	<p class="text-sm text-gray-600">Approved on: ${task.reviewedDate}</p>
 </li>
 `;
@@ -112,7 +112,7 @@ export function renderTaskList(taskList, editTaskId) {
 			htmlRejectedTasks += `
 <li class="bg-red-50 rounded-xl border border-red-200 p-4 space-y-2">
 	<h3 class="font-semibold text-lg">${task.title}</h3>
-	<p class="text-sm">Rejected for <strong>${task.assignedTo}</strong></p>
+	<p class="text-sm">Rejected for <strong>${task.assignedTo.join(',')}</strong></p>
 	<p class="text-sm text-gray-600">Rejected on: ${task.reviewedDate}</p>
 </li>
 `;

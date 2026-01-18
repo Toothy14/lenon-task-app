@@ -3,7 +3,9 @@ export function renderUserTasks(taskList, currentUser) {
 	const approvedListElement = document.querySelector('.approved-list');
 	const rejectedListElement = document.querySelector('.rejected-list');
 
-	const userTasks = taskList.filter((task) => task.assignedTo === currentUser);
+	const userTasks = taskList.filter((task) =>
+		task.assignedTo.includes(currentUser)
+	);
 	let htmlPendingTasks = '';
 	let htmlApprovedTasks = '';
 	let htmlRejectedTasks = '';

@@ -23,16 +23,19 @@ function addTasks(event) {
 	const userSelect = document.querySelector('.js-user-select'); //Select
 
 	const taskTitle = inputElement.value.trim();
-	const assignedUser = userSelect.value;
+
+	const assignedUsers = Array.from(userSelect.selectedOptions).map(
+		(option) => option.value
+	);
 
 	//checks first if the taskTitle or assignedUser is empty
-	if (!taskTitle || !assignedUser) return;
+	if (!taskTitle || assignedUsers.length === 0) return;
 
 	//else if both are not empty
 	taskList.push({
 		id: Date.now(),
 		title: taskTitle,
-		assignedTo: assignedUser,
+		assignedTo: assignedUsers,
 		assignedDate: getFormattedDate(),
 		status: 'pending',
 	});
@@ -95,11 +98,14 @@ function controllers() {
 			const newTitle = li.querySelector('.edit-title').value;
 
 			//reads the new selected assigned user in editable view
-			const newUser = li.querySelector('.edit-user').value;
+
+			const selectedUsers = Array.from(
+				li.querySelector('.edit-user').selectedOptions
+			).map((option) => option.value);
 
 			//update taskList
 			task.title = newTitle;
-			task.assignedTo = newUser;
+			task.assignedTo = selectedUsers;
 
 			editTaskId = null; //Exit edit mode
 			saveTasks(taskList);
