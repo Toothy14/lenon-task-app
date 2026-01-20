@@ -34,14 +34,26 @@
 								placeholder="Enter new task.."
 							/>
 
-							<select
-								class="js-user-select border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
-								multiple
-							>
-								<option value="">Select User</option>
-								<option value="Alf">Alf</option>
-								<option value="Princess">Princess</option>
-							</select>
+							<!--Replacement of select logic for selecting users-->
+							<div class="user-picker flex gap-2">
+								<button
+									type="button"
+									class="user-btn px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer"
+									data-user="Alf"
+								>
+									Alf
+								</button>
+								<button
+									type="button"
+									class="user-btn px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer"
+									data-user="Princess"
+								>
+									Princess
+								</button>
+							</div>
+
+							<!--Container on where the users would be displayed-->
+							<div class="selected-users flex gap-2 mt-2"></div>
 
 							<button
 								class="js-add-button bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition"
