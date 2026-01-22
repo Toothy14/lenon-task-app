@@ -13,45 +13,38 @@ form.addEventListener('submit', (event) => {
 	addTasks(event);
 });
 
-//functions
+// Every time the admin selects or unselects a user, update the UI
+const userSelect = document.querySelector('.js-user-select');
 
-//Store the selected users heere
-let selectedUsers = [];
+userSelect.addEventListener('change', renderSelectedUsers);
 
-const userButtons = document.querySelectorAll('.user-btn');
+// Display selected users
 const selectedUsersContainer = document.querySelector('.selected-users');
-
-//select users
-userButtons.forEach((button) => {
-	button.addEventListener('click', () => {
-		// user we want to assign
-		const user = button.dataset.user;
-
-		if (selectedUsers.includes(user)) {
-			//remove
-			selectedUsers = selectedUsers.filter((u) => u !== user);
-			button.classList.remove('bg-blue-500', 'text-white');
-			button.classList.add('border-gray-300', 'text-gray-700');
-		} else {
-			//add
-			selectedUsers.push(user);
-			button.classList.add('bg-blue-500', 'text-white');
-			button.classList.remove('border-gray-300', 'text-gray-700');
-		}
-		renderSelectedUsers();
-	});
-});
-
-// display the selected users
 function renderSelectedUsers() {
+	const selectedUsers = Array.from(userSelect.selectedOptions).map(
+		(option) => option.value,
+	);
 	selectedUsersContainer.innerHTML = selectedUsers
 		.map(
-			(user) => `<span class="px-2 py-1 bg-gray-200 rounded ">${user}</span>`,
+			(user) => `
+			<span class="px-2 py-1 bg-gray-200 rounded text-sm">
+				${user}
+			</span>
+		`,
 		)
-		.join(''); //display
+		.join('');
 }
 
-//add tasks
+// button logic to show the users when clicked
+const toggleButton = document.querySelector('.js-toggle-users');
+
+toggleButton.addEventListener('click', () => {
+	userSelect.classList.toggle('hidden');
+});
+
+// functions
+
+// add tasks
 function addTasks(event) {
 	event.preventDefault(); //prevents the default behavior of the browser (reloading automatically)
 
@@ -59,7 +52,10 @@ function addTasks(event) {
 
 	const taskTitle = inputElement.value.trim();
 
-	const assignedUsers = selectedUsers;
+	// users selected
+	const assignedUsers = Array.from(userSelect.selectedOptions).map(
+		(option) => option.value,
+	);
 
 	//checks first if the taskTitle or assignedUser is empty
 	if (!taskTitle || assignedUsers.length === 0) return;
@@ -74,6 +70,9 @@ function addTasks(event) {
 	});
 
 	form.reset(); //Clears the elements
+	userSelect.classList.add('hidden');
+	selectedUsersContainer.innerHTML = '';
+
 	saveTasks(taskList);
 	renderTaskList(taskList, editTaskId);
 }
