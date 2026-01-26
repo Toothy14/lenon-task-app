@@ -3,7 +3,7 @@ import { findTaskById } from './utils/findTaskById.js';
 import { renderTaskList } from './utils/renderTaskList.js';
 import { saveTasks, loadTasks } from './utils/storage.js';
 import { approveTask, rejectTask } from './utils/taskService.js';
-
+import { sidebarLogic } from './utils/sidebar.js';
 //Local storage
 let taskList = loadTasks();
 
@@ -14,21 +14,8 @@ form.addEventListener('submit', (event) => {
 });
 
 // Sidebar logic
-const sidebarButtons = document.querySelectorAll('.sidebar-btn');
-const sections = document.querySelectorAll('.task-section');
-sidebarButtons.forEach((button) => {
-	button.addEventListener('click', () => {
-		const targetSection = button.dataset.section;
+sidebarLogic();
 
-		// Hides all sections
-		sections.forEach((section) => {
-			section.classList.add('hidden');
-		});
-
-		// Remove the hidden class from target section to show only the selected one
-		document.getElementById(targetSection).classList.remove('hidden');
-	});
-});
 // Every time the admin selects or unselects a user, update the UI
 const userSelect = document.querySelector('.js-user-select');
 

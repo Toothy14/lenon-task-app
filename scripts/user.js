@@ -2,6 +2,7 @@ import { loadTasks } from './utils/storage.js';
 import { submitProof } from './utils/taskService.js';
 import { setCurrentUser, getCurrentUser } from './utils/userService.js';
 import { renderUserTasks } from './utils/renderUserTasks.js';
+import { sidebarLogic } from './utils/sidebar.js';
 
 let taskList = loadTasks(); //Contains all of the tasks (local storage)
 
@@ -25,20 +26,7 @@ if (userSwitch) {
 renderUserTasks(taskList, currentUser);
 
 //Sidebar Logic
-const sidebarButtons = document.querySelectorAll('.sidebar-btn');
-const sections = document.querySelectorAll('.task-section');
-
-sidebarButtons.forEach((button) => {
-	button.addEventListener('click', () => {
-		const target = button.dataset.section;
-
-		sections.forEach((section) => {
-			section.classList.add('hidden');
-		});
-
-		document.getElementById(target).classList.remove('hidden');
-	});
-});
+sidebarLogic();
 
 const tasksContainer = document.querySelector('.tasks-container');
 
