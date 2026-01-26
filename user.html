@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
@@ -20,24 +20,56 @@
 				</select>
 			</header>
 
-			<div class="tasks-container grid grid-cols-1 md:grid-cols-3 gap-6">
-				<!-- Pending -->
-				<section class="bg-white rounded-xl shadow p-4 space-y-4">
-					<h2 class="text-lg font-semibold text-yellow-600">Pending</h2>
-					<ul class="pending-list space-y-3"></ul>
-				</section>
+			<div class="dashboard-layout flex gap-6">
+				<aside class="w-48 bg-white rounded-xl shadow p-4 space-y-3">
+					<button
+						class="sidebar-btn w-full text-left px-3 py-2 rounded hover:bg-gray-100"
+						data-section="pending"
+					>
+						Pending
+					</button>
+					<button
+						class="sidebar-btn w-full text-left px-3 py-2 rounded hover:bg-gray-100"
+						data-section="approved"
+					>
+						Approved
+					</button>
+					<button
+						class="sidebar-btn w-full text-left px-3 py-2 rounded hover:bg-gray-100"
+						data-section="rejected"
+					>
+						Rejected
+					</button>
+				</aside>
 
-				<!-- Approved -->
-				<section class="bg-white rounded-xl shadow p-4 space-y-4">
-					<h2 class="text-lg font-semibold text-green-600">Approved</h2>
-					<ul class="approved-list space-y-3"></ul>
-				</section>
+				<div class="tasks-container flex-1 space-y-8">
+					<!-- Pending -->
+					<section
+						id="pending"
+						class="task-section bg-white rounded-xl shadow p-6"
+					>
+						<h2 class="text-lg font-semibold mb-4 text-yellow-600">Pending</h2>
+						<ul class="pending-list space-y-3"></ul>
+					</section>
 
-				<!-- Rejected -->
-				<section class="bg-white rounded-xl shadow p-4 space-y-4">
-					<h2 class="text-lg font-semibold text-red-600">Rejected</h2>
-					<ul class="rejected-list space-y-3"></ul>
-				</section>
+					<!-- Approved -->
+					<section
+						id="approved"
+						class="task-section hidden hidden bg-white rounded-xl shadow p-6"
+					>
+						<h2 class="text-lg font-semibold mb-4 text-green-600">Approved</h2>
+						<ul class="approved-list space-y-3"></ul>
+					</section>
+
+					<!-- Rejected -->
+					<section
+						id="rejected"
+						class="task-section hidden bg-white rounded-xl shadow p-6"
+					>
+						<h2 class="text-lg font-semibold mb-4 text-red-600">Rejected</h2>
+						<ul class="rejected-list space-y-3"></ul>
+					</section>
+				</div>
 			</div>
 		</main>
 

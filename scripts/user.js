@@ -24,6 +24,22 @@ if (userSwitch) {
 
 renderUserTasks(taskList, currentUser);
 
+//Sidebar Logic
+const sidebarButtons = document.querySelectorAll('.sidebar-btn');
+const sections = document.querySelectorAll('.task-section');
+
+sidebarButtons.forEach((button) => {
+	button.addEventListener('click', () => {
+		const target = button.dataset.section;
+
+		sections.forEach((section) => {
+			section.classList.add('hidden');
+		});
+
+		document.getElementById(target).classList.remove('hidden');
+	});
+});
+
 const tasksContainer = document.querySelector('.tasks-container');
 
 tasksContainer.addEventListener('click', (event) => {
