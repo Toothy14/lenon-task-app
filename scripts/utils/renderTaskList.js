@@ -60,6 +60,7 @@ export function renderTaskList(taskList, editTaskId) {
 
 	<p class="text-sm text-gray-600">Assigned to: <strong>${task.assignedTo.join(', ')}</strong></p>
 	<p class="text-sm text-gray-500">Assigned on: ${task.assignedDate}</p>
+	<p class="text-sm text-gray-500">Due on: ${task.dueDate}</p>
 
 	<span class="inline-block text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">
 		Pending
@@ -85,6 +86,8 @@ export function renderTaskList(taskList, editTaskId) {
 	</p>
 
 	<p class="text-sm text-gray-500">Submitted on: ${task.submittedDate}</p>
+
+	<p class="text-sm text-gray-500">Due on: ${task.dueDate}</p>
 
 	<p class="text-sm bg-gray-100 p-2 rounded">
 		<strong>Proof:</strong> ${task.proof.text}

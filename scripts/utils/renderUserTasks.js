@@ -4,7 +4,7 @@ export function renderUserTasks(taskList, currentUser) {
 	const rejectedListElement = document.querySelector('.rejected-list');
 
 	const userTasks = taskList.filter((task) =>
-		task.assignedTo.includes(currentUser)
+		task.assignedTo.includes(currentUser),
 	);
 	let htmlPendingTasks = '';
 	let htmlApprovedTasks = '';
@@ -18,6 +18,7 @@ export function renderUserTasks(taskList, currentUser) {
 
 	<p class="text-sm text-gray-600">Status: ${task.status}</p>
 	<p class="text-sm text-gray-500">Assigned on: ${task.assignedDate}</p>
+	<p class="text-sm text-gray-500">Due on: ${task.dueDate}</p>
 
 	<input
 		class="input-proof w-full border rounded-md p-2 text-sm focus:outline-none focus:ring focus:ring-blue-300"

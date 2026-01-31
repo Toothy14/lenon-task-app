@@ -55,13 +55,26 @@ function addTasks(event) {
 
 	const taskTitle = inputElement.value.trim();
 
+	const dateElement = document.querySelector('.js-date-input');
+
+	const dueDate = dateElement.value;
+
+	// Default the date to today, so admins won't forget
+	dateElement.value = dayjs().format('YYYY-MM-DD');
+
 	// users selected
 	const assignedUsers = Array.from(userSelect.selectedOptions).map(
 		(option) => option.value,
 	);
 
-	//checks first if the taskTitle or assignedUser is empty
-	if (!taskTitle || assignedUsers.length === 0) return;
+	//checks first if the taskTitle, assignedUser, and due date is empty
+	if (!taskTitle || assignedUsers.length === 0 || !dueDate) return;
+
+	// Prevents selecting past date for deadline
+	if (dayjs(dueDate).isBefore(dayjs(), 'day')) {
+		alert('Deadline cannot be in the past.');
+		return;
+	}
 
 	//else if both are not empty
 	taskList.push({
@@ -70,6 +83,7 @@ function addTasks(event) {
 		assignedTo: assignedUsers,
 		assignedDate: getFormattedDate(),
 		status: 'pending',
+		dueDate: dayjs(dueDate).format('MMM D, YYYY'),
 	});
 
 	form.reset(); //Clears the elements
