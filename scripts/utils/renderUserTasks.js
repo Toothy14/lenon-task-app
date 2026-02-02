@@ -1,3 +1,7 @@
+import { getDueState } from './renderTaskList.js';
+
+getDueState();
+
 export function renderUserTasks(taskList, currentUser) {
 	const taskListElement = document.querySelector('.pending-list');
 	const approvedListElement = document.querySelector('.approved-list');
@@ -18,7 +22,33 @@ export function renderUserTasks(taskList, currentUser) {
 
 	<p class="text-sm text-gray-600">Status: ${task.status}</p>
 	<p class="text-sm text-gray-500">Assigned on: ${task.assignedDate}</p>
-	<p class="text-sm text-gray-500">Due on: ${task.dueDate}</p>
+
+
+	${(() => {
+		const dueState = getDueState(task.dueDateRaw);
+
+		if (dueState === 'overdue') {
+			return `
+			<p class="text-sm text-red-600 font-semibold">
+				⚠ Overdue (Due on: ${task.dueDate})
+			</p>
+		`;
+		}
+
+		if (dueState === 'near') {
+			return `
+			<p class="text-sm text-orange-500 font-semibold">
+				⏰ Near due (Due on: ${task.dueDate})
+			</p>
+		`;
+		}
+
+		return `
+		<p class="text-sm text-gray-500">
+			Due on: ${task.dueDate}
+		</p>
+	`;
+	})()}
 
 	<input
 		class="input-proof w-full border rounded-md p-2 text-sm focus:outline-none focus:ring focus:ring-blue-300"

@@ -83,7 +83,8 @@ function addTasks(event) {
 		assignedTo: assignedUsers,
 		assignedDate: getFormattedDate(),
 		status: 'pending',
-		dueDate: dayjs(dueDate).format('MMM D, YYYY'),
+		dueDateRaw: dueDate, // YYYY-MM-DD (for logic)
+		dueDate: dayjs(dueDate).format('MMM D, YYYY'), // Display
 	});
 
 	form.reset(); //Clears the elements

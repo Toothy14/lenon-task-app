@@ -1,3 +1,13 @@
+// Due date logic
+export function getDueState(dueDateRaw) {
+	const today = dayjs().startOf('day');
+	const due = dayjs(dueDateRaw);
+
+	if (due.isBefore(today)) return 'overdue'; // if due date is befire today
+	if (due.diff(today, 'day') <= 2) return 'near'; // if due date is within 2 days
+	return 'normal';
+}
+
 //render the task list
 export function renderTaskList(taskList, editTaskId) {
 	const taskListElement = document.querySelector('.pending-list'); //UL
@@ -60,7 +70,34 @@ export function renderTaskList(taskList, editTaskId) {
 
 	<p class="text-sm text-gray-600">Assigned to: <strong>${task.assignedTo.join(', ')}</strong></p>
 	<p class="text-sm text-gray-500">Assigned on: ${task.assignedDate}</p>
-	<p class="text-sm text-gray-500">Due on: ${task.dueDate}</p>
+	
+	
+	${(() => {
+		const dueState = getDueState(task.dueDateRaw);
+
+		if (dueState === 'overdue') {
+			return `
+			<p class="text-sm text-red-600 font-semibold">
+				⚠ Overdue (Due on: ${task.dueDate})
+			</p>
+		`;
+		}
+
+		if (dueState === 'near') {
+			return `
+			<p class="text-sm text-orange-500 font-semibold">
+				⏰ Near due (Due on: ${task.dueDate})
+			</p>
+		`;
+		}
+
+		return `
+		<p class="text-sm text-gray-500">
+			Due on: ${task.dueDate}
+		</p>
+	`;
+	})()}
+
 
 	<span class="inline-block text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">
 		Pending
