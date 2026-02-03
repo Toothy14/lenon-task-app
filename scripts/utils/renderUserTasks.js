@@ -1,6 +1,4 @@
-import { getDueState } from './renderTaskList.js';
-
-getDueState();
+import { getDueState } from './dueDate.js';
 
 export function renderUserTasks(taskList, currentUser) {
 	const taskListElement = document.querySelector('.pending-list');
