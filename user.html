@@ -13,12 +13,19 @@
 				<a href="admin.html" class="text-sm text-blue-600 hover:underline"
 					>Back to Admin</a
 				>
+
 				<select class="js-user-switch">
 					<option value="">Logged out</option>
 					<option value="Alf">Alf</option>
 					<option value="Princess">Princess</option>
 				</select>
 			</header>
+
+			<!--Sort Tasks by Due Date-->
+			<select class="js-sort-due flex flex-row border rounded-md px-1 py-1">
+				<option value="earliest">Earliest</option>
+				<option value="latest">Latest</option>
+			</select>
 
 			<div class="dashboard-layout flex gap-6">
 				<aside class="w-48 bg-white rounded-xl shadow p-4 space-y-3">

@@ -28,6 +28,33 @@ renderUserTasks(taskList, currentUser);
 //Sidebar Logic
 sidebarLogic();
 
+// Sort task by Due Date Logic
+const sortSelect = document.querySelector('.js-sort-due');
+
+sortSelect.addEventListener('change', () => {
+	const value = sortSelect.value;
+
+	const userTasks = taskList.filter((task) =>
+		task.assignedTo.includes(currentUser),
+	);
+
+	let sortedTasks = [...userTasks];
+
+	if (value === 'earliest') {
+		sortedTasks.sort((a, b) => {
+			return dayjs(a.dueDateRaw).valueOf() - dayjs(b.dueDateRaw).valueOf();
+		});
+	}
+
+	if (value === 'latest') {
+		sortedTasks.sort((a, b) => {
+			return dayjs(b.dueDateRaw).valueOf() - dayjs(a.dueDateRaw).valueOf();
+		});
+	}
+
+	renderUserTasks(sortedTasks, currentUser, true);
+});
+
 const tasksContainer = document.querySelector('.tasks-container');
 
 tasksContainer.addEventListener('click', (event) => {

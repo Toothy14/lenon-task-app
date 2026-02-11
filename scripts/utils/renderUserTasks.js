@@ -1,13 +1,14 @@
 import { getDueState } from './dueDate.js';
 
-export function renderUserTasks(taskList, currentUser) {
+export function renderUserTasks(taskList, currentUser, isSorted = false) {
 	const taskListElement = document.querySelector('.pending-list');
 	const approvedListElement = document.querySelector('.approved-list');
 	const rejectedListElement = document.querySelector('.rejected-list');
 
-	const userTasks = taskList.filter((task) =>
-		task.assignedTo.includes(currentUser),
-	);
+	const userTasks = isSorted
+		? taskList
+		: taskList.filter((task) => task.assignedTo.includes(currentUser));
+
 	let htmlPendingTasks = '';
 	let htmlApprovedTasks = '';
 	let htmlRejectedTasks = '';

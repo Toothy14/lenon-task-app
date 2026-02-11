@@ -4,6 +4,7 @@ import { renderTaskList } from './utils/renderTaskList.js';
 import { saveTasks, loadTasks } from './utils/storage.js';
 import { approveTask, rejectTask } from './utils/taskService.js';
 import { sidebarLogic } from './utils/sidebar.js';
+
 //Local storage
 let taskList = loadTasks();
 
@@ -15,6 +16,29 @@ form.addEventListener('submit', (event) => {
 
 // Sidebar logic
 sidebarLogic();
+
+// Sort tasks by Due Date Logic
+const sortSelect = document.querySelector('.js-sort-due');
+
+sortSelect.addEventListener('change', () => {
+	const value = sortSelect.value;
+
+	let sortedTasks = [...taskList];
+
+	if (value === 'earliest') {
+		sortedTasks.sort((a, b) => {
+			return dayjs(a.dueDateRaw).valueOf() - dayjs(b.dueDateRaw).valueOf();
+		});
+	}
+
+	if (value === 'latest') {
+		sortedTasks.sort((a, b) => {
+			return dayjs(b.dueDateRaw).valueOf() - dayjs(a.dueDateRaw).valueOf();
+		});
+	}
+
+	renderTaskList(sortedTasks);
+});
 
 // Every time the admin selects or unselects a user, update the UI
 const userSelect = document.querySelector('.js-user-select');
