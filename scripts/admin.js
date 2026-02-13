@@ -4,6 +4,7 @@ import { renderTaskList } from './utils/renderTaskList.js';
 import { saveTasks, loadTasks } from './utils/storage.js';
 import { approveTask, rejectTask } from './utils/taskService.js';
 import { sidebarLogic } from './utils/sidebar.js';
+import { sortTasksByDueDate } from './utils/sortTasks.js';
 
 //Local storage
 let taskList = loadTasks();
@@ -23,21 +24,12 @@ const sortSelect = document.querySelector('.js-sort-due');
 sortSelect.addEventListener('change', () => {
 	const value = sortSelect.value;
 
-	let sortedTasks = [...taskList];
+	// Notice that 'tasks' became 'taskList', and 'sortType' became 'value' (Check sortTasks.js)
+	// Temporary variables can be replaced with the original value by using parameter (new learning to guys)
+	const sortedTasks = sortTasksByDueDate(taskList, value);
 
-	if (value === 'earliest') {
-		sortedTasks.sort((a, b) => {
-			return dayjs(a.dueDateRaw).valueOf() - dayjs(b.dueDateRaw).valueOf();
-		});
-	}
-
-	if (value === 'latest') {
-		sortedTasks.sort((a, b) => {
-			return dayjs(b.dueDateRaw).valueOf() - dayjs(a.dueDateRaw).valueOf();
-		});
-	}
-
-	renderTaskList(sortedTasks);
+	// Render sorted task list
+	renderTaskList(sortedTasks, editTaskId);
 });
 
 // Every time the admin selects or unselects a user, update the UI

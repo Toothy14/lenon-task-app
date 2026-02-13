@@ -3,6 +3,7 @@ import { submitProof } from './utils/taskService.js';
 import { setCurrentUser, getCurrentUser } from './utils/userService.js';
 import { renderUserTasks } from './utils/renderUserTasks.js';
 import { sidebarLogic } from './utils/sidebar.js';
+import { sortTasksByDueDate } from './utils/sortTasks.js';
 
 let taskList = loadTasks(); //Contains all of the tasks (local storage)
 
@@ -38,20 +39,11 @@ sortSelect.addEventListener('change', () => {
 		task.assignedTo.includes(currentUser),
 	);
 
-	let sortedTasks = [...userTasks];
+	// Notice that 'tasks', and 'sortType' from sortTasks.js changed into 'userTasks', and 'value'
+	// We can change variables or values using parameter
+	const sortedTasks = sortTasksByDueDate(userTasks, value);
 
-	if (value === 'earliest') {
-		sortedTasks.sort((a, b) => {
-			return dayjs(a.dueDateRaw).valueOf() - dayjs(b.dueDateRaw).valueOf();
-		});
-	}
-
-	if (value === 'latest') {
-		sortedTasks.sort((a, b) => {
-			return dayjs(b.dueDateRaw).valueOf() - dayjs(a.dueDateRaw).valueOf();
-		});
-	}
-
+	// Render sorted user task list
 	renderUserTasks(sortedTasks, currentUser, true);
 });
 
