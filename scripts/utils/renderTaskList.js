@@ -31,7 +31,18 @@ export function renderTaskList(taskList, editTaskId) {
 		}>Princess</option>
 	</select>
 	
+	
 	<div class="edit-selected-users flex gap-2 mt-2"></div>
+
+	<!--Due Date-->
+								<input
+									type="date"
+									id="dueDate"
+									class="js-date-input border rounded-lg px-3 py-2" 
+									value="${task.dueDateRaw}"
+								/>
+
+	
 
 	<div class="flex gap-2">
 		<button class="task-save bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600" data-id="${

@@ -99,8 +99,8 @@ function addTasks(event) {
 		assignedTo: assignedUsers,
 		assignedDate: getFormattedDate(),
 		status: 'pending',
-		dueDateRaw: dueDate, // YYYY-MM-DD (for logic)
-		dueDate: dayjs(dueDate).format('MMM D, YYYY'), // Display
+		dueDateRaw: dueDate, // YYYY-MM-DD (For logic)
+		dueDate: dayjs(dueDate).format('MMM D, YYYY'), // For display
 	});
 
 	form.reset(); //Clears the elements
@@ -164,19 +164,30 @@ function controllers() {
 			const newTitle = li.querySelector('.edit-title').value;
 
 			//reads the new selected assigned user in editable view
-
 			const selectedUsers = Array.from(
 				li.querySelector('.edit-user').selectedOptions,
 			).map((option) => option.value);
 
+			// New due date in edit mode
+			const newDueDate = li.querySelector('.js-date-input').value;
+
+			// Prevents selecting past date for due date
+			if (dayjs(newDueDate).isBefore(dayjs(), 'day')) {
+				alert('Deadline cannot be in the past.');
+				return;
+			}
+
 			//update taskList
 			task.title = newTitle;
 			task.assignedTo = selectedUsers;
+			task.dueDateRaw = newDueDate; // New due date raw (for logic, not for display)
+			task.dueDate = dayjs(newDueDate).format('MMM D, YYYY'); // New due date (for display)
 
 			editTaskId = null; //Exit edit mode
 			saveTasks(taskList);
 
 			renderTaskList(taskList, editTaskId); //update the page
+			console.log(taskList);
 		}
 
 		if (event.target.classList.contains('approve-button')) {
