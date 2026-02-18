@@ -24,7 +24,10 @@ if (userSwitch) {
 	});
 }
 
-renderUserTasks(taskList, currentUser);
+// Render sorted tasks (Earliest to Latest)
+const sortValue = document.querySelector('.js-sort-due').value;
+const sortedTasks = sortTasksByDueDate(taskList, sortValue);
+renderUserTasks(sortedTasks, currentUser);
 
 //Sidebar Logic
 sidebarLogic();

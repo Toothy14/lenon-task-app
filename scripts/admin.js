@@ -107,14 +107,19 @@ function addTasks(event) {
 	userSelect.classList.add('hidden');
 	selectedUsersContainer.innerHTML = '';
 
-	saveTasks(taskList);
-	renderTaskList(taskList, editTaskId);
+	saveTasks(taskList); //Update the taskList from local storage (saved)
+
+	const sortValue = document.querySelector('.js-sort-due').value; // Value of select (earliest or latest)
+	const sortedTasks = sortTasksByDueDate(taskList, sortValue); // Sort the updated taskList
+	renderTaskList(sortedTasks, editTaskId); // Render the sorted tasks
 }
 
 let editTaskId = null; //stores the id of the task currently (being edited)
 
-//render task list
-renderTaskList(taskList, editTaskId);
+//Render Sorted Tasks (Earliest to Latest)
+const sortValue = document.querySelector('.js-sort-due').value; // Value of select (earliest or latest)
+const sortedTasks = sortTasksByDueDate(taskList, sortValue); // Sort the updated taskList
+renderTaskList(sortedTasks, editTaskId);
 
 function controllers() {
 	const tasksContainer = document.querySelector('.tasks-container'); //div
@@ -184,10 +189,13 @@ function controllers() {
 			task.dueDate = dayjs(newDueDate).format('MMM D, YYYY'); // New due date (for display)
 
 			editTaskId = null; //Exit edit mode
-			saveTasks(taskList);
+			saveTasks(taskList); // Update the taskList to local storage
 
-			renderTaskList(taskList, editTaskId); //update the page
-			console.log(taskList);
+			// Auto-Resort after changing due date
+			const sortValue = document.querySelector('.js-sort-due').value; // Get the value from select (earliest or latest)
+			const sortedTasks = sortTasksByDueDate(taskList, sortValue); // Sort the updated taskList
+
+			renderTaskList(sortedTasks, editTaskId); //update the page || Render the updated sorted tasks
 		}
 
 		if (event.target.classList.contains('approve-button')) {
