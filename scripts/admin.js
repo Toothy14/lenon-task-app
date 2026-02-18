@@ -1,10 +1,9 @@
 import { getFormattedDate } from './utils/date.js';
 import { findTaskById } from './utils/findTaskById.js';
-import { renderTaskList } from './utils/renderTaskList.js';
 import { saveTasks, loadTasks } from './utils/storage.js';
 import { approveTask, rejectTask } from './utils/taskService.js';
 import { sidebarLogic } from './utils/sidebar.js';
-import { sortTasksByDueDate } from './utils/sortTasks.js';
+import { renderSortedTasks } from './utils/renderSortedTasks.js';
 
 //Local storage
 let taskList = loadTasks();
@@ -22,14 +21,11 @@ sidebarLogic();
 const sortSelect = document.querySelector('.js-sort-due');
 
 sortSelect.addEventListener('change', () => {
-	const value = sortSelect.value;
-
 	// Notice that 'tasks' became 'taskList', and 'sortType' became 'value' (Check sortTasks.js)
 	// Temporary variables can be replaced with the original value by using parameter (new learning to guys)
-	const sortedTasks = sortTasksByDueDate(taskList, value);
 
 	// Render sorted task list
-	renderTaskList(sortedTasks, editTaskId);
+	renderSortedTasks(taskList, editTaskId);
 });
 
 // Every time the admin selects or unselects a user, update the UI
@@ -109,17 +105,13 @@ function addTasks(event) {
 
 	saveTasks(taskList); //Update the taskList from local storage (saved)
 
-	const sortValue = document.querySelector('.js-sort-due').value; // Value of select (earliest or latest)
-	const sortedTasks = sortTasksByDueDate(taskList, sortValue); // Sort the updated taskList
-	renderTaskList(sortedTasks, editTaskId); // Render the sorted tasks
+	renderSortedTasks(taskList, editTaskId);
 }
 
 let editTaskId = null; //stores the id of the task currently (being edited)
 
 //Render Sorted Tasks (Earliest to Latest)
-const sortValue = document.querySelector('.js-sort-due').value; // Value of select (earliest or latest)
-const sortedTasks = sortTasksByDueDate(taskList, sortValue); // Sort the updated taskList
-renderTaskList(sortedTasks, editTaskId);
+renderSortedTasks(taskList, editTaskId);
 
 function controllers() {
 	const tasksContainer = document.querySelector('.tasks-container'); //div
@@ -133,21 +125,21 @@ function controllers() {
 			taskList = taskList.filter((task) => task.id !== id);
 			//Creates a new array and move the tasks to the new array except for the id or task that we deleted
 			saveTasks(taskList);
-			renderTaskList(taskList, editTaskId);
+			renderSortedTasks(taskList, editTaskId);
 			//update the task list after changing the data
 		}
 
 		//Edit button
 		if (event.target.classList.contains('task-edit')) {
 			editTaskId = id; //set this 'id'(task) to edit mode
-			renderTaskList(taskList, editTaskId);
+			renderSortedTasks(taskList, editTaskId);
 			//update the task list after changing the data
 		}
 
 		//Cancel button
 		if (event.target.classList.contains('task-cancel')) {
 			editTaskId = null; //exit edit mode because null = no value
-			renderTaskList(taskList, editTaskId);
+			renderSortedTasks(taskList, editTaskId);
 			//update the task list after changing the data
 		}
 
@@ -192,20 +184,17 @@ function controllers() {
 			saveTasks(taskList); // Update the taskList to local storage
 
 			// Auto-Resort after changing due date
-			const sortValue = document.querySelector('.js-sort-due').value; // Get the value from select (earliest or latest)
-			const sortedTasks = sortTasksByDueDate(taskList, sortValue); // Sort the updated taskList
-
-			renderTaskList(sortedTasks, editTaskId); //update the page || Render the updated sorted tasks
+			renderSortedTasks(taskList, editTaskId);
 		}
 
 		if (event.target.classList.contains('approve-button')) {
 			approveTask(taskList, id);
-			renderTaskList(taskList, editTaskId);
+			renderSortedTasks(taskList, editTaskId);
 		}
 
 		if (event.target.classList.contains('reject-button')) {
 			rejectTask(taskList, id);
-			renderTaskList(taskList, editTaskId);
+			renderSortedTasks(taskList, editTaskId);
 		}
 	});
 }
