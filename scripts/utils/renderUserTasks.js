@@ -14,7 +14,7 @@ export function renderUserTasks(taskList, currentUser, isSorted = false) {
 	let htmlRejectedTasks = '';
 
 	userTasks.forEach((task) => {
-		if (!task.proof) {
+		if (!task.proof || !task.proof.status) {
 			htmlPendingTasks += `
 <li class="bg-gray-50 border rounded-lg p-4 space-y-2">
 	<h3 class="font-semibold text-gray-800">${task.title}</h3>

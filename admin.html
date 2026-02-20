@@ -96,12 +96,21 @@
 						</section>
 
 						<!--Sort Tasks by Due Date-->
-						<select
-							class="js-sort-due flex flex-row border rounded-md px-1 py-1"
+						<div
+							class="select-container flex justify-between justify-items-center items-center"
 						>
-							<option value="earliest">Earliest</option>
-							<option value="latest">Latest</option>
-						</select>
+							<select class="js-sort-due border rounded-md px-1 py-1">
+								<option value="earliest">Earliest</option>
+								<option value="latest">Latest</option>
+							</select>
+
+							<select class="js-due-filter border rounded-md px-1 py-1">
+								<option value="all">All</option>
+								<option value="overdue">Overdue</option>
+								<option value="near">Near</option>
+								<option value="normal">Normal</option>
+							</select>
+						</div>
 
 						<!-- Pending (default view) -->
 						<section

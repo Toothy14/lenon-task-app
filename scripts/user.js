@@ -4,6 +4,7 @@ import { setCurrentUser, getCurrentUser } from './utils/userService.js';
 import { renderUserTasks } from './utils/renderUserTasks.js';
 import { sidebarLogic } from './utils/sidebar.js';
 import { sortTasksByDueDate } from './utils/sortTasks.js';
+import { renderSortedUserTasks } from './utils/renderSortedTasks.js';
 
 let taskList = loadTasks(); //Contains all of the tasks (local storage)
 
@@ -24,30 +25,23 @@ if (userSwitch) {
 	});
 }
 
-// Render sorted tasks (Earliest to Latest)
-const sortValue = document.querySelector('.js-sort-due').value;
-const sortedTasks = sortTasksByDueDate(taskList, sortValue);
-renderUserTasks(sortedTasks, currentUser);
-
 //Sidebar Logic
 sidebarLogic();
+
+// Filter Tasks
+const filterSelect = document.querySelector('.js-due-filter');
+filterSelect.addEventListener('change', () => {
+	renderSortedUserTasks(taskList, currentUser, true);
+});
+
+// Render sorted tasks (Earliest to Latest)
+renderSortedUserTasks(taskList, currentUser, true);
 
 // Sort task by Due Date Logic
 const sortSelect = document.querySelector('.js-sort-due');
 
 sortSelect.addEventListener('change', () => {
-	const value = sortSelect.value;
-
-	const userTasks = taskList.filter((task) =>
-		task.assignedTo.includes(currentUser),
-	);
-
-	// Notice that 'tasks', and 'sortType' from sortTasks.js changed into 'userTasks', and 'value'
-	// We can change variables or values using parameter
-	const sortedTasks = sortTasksByDueDate(userTasks, value);
-
-	// Render sorted user task list
-	renderUserTasks(sortedTasks, currentUser, true);
+	renderSortedUserTasks(taskList, currentUser, true);
 });
 
 const tasksContainer = document.querySelector('.tasks-container');
@@ -72,6 +66,6 @@ tasksContainer.addEventListener('click', (event) => {
 	//submit proof logic
 	submitProof(taskList, id, proofText);
 
-	//re-render the updated data
-	renderUserTasks(taskList, currentUser);
+	// render the filtered and sorted tasks
+	renderSortedUserTasks(taskList, currentUser);
 });

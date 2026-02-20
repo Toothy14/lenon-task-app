@@ -17,13 +17,16 @@ form.addEventListener('submit', (event) => {
 // Sidebar logic
 sidebarLogic();
 
+// Filter Tasks (Overdue/Near/Normal/All)
+const filterSelect = document.querySelector('.js-due-filter');
+filterSelect.addEventListener('change', () => {
+	renderSortedTasks(taskList, editTaskId); // task list === all tasks
+});
+
 // Sort tasks by Due Date Logic
-const sortSelect = document.querySelector('.js-sort-due');
+const sortSelect = document.querySelector('.js-sort-due'); // Sort dropdown
 
 sortSelect.addEventListener('change', () => {
-	// Notice that 'tasks' became 'taskList', and 'sortType' became 'value' (Check sortTasks.js)
-	// Temporary variables can be replaced with the original value by using parameter (new learning to guys)
-
 	// Render sorted task list
 	renderSortedTasks(taskList, editTaskId);
 });

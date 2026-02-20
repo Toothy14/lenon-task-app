@@ -21,11 +21,23 @@
 				</select>
 			</header>
 
-			<!--Sort Tasks by Due Date-->
-			<select class="js-sort-due flex flex-row border rounded-md px-1 py-1">
-				<option value="earliest">Earliest</option>
-				<option value="latest">Latest</option>
-			</select>
+			<!--Sort tasks by due date-->
+			<div
+				class="select-container flex justify-between justify-items-center items-center"
+			>
+				<select class="js-sort-due border rounded-md px-1 py-1">
+					<option value="earliest">Earliest</option>
+					<option value="latest">Latest</option>
+				</select>
+
+				<!--Filter tasks by due date-->
+				<select class="js-due-filter border rounded-md px-1 py-1">
+					<option value="all">All</option>
+					<option value="overdue">Overdue</option>
+					<option value="near">Near</option>
+					<option value="normal">Normal</option>
+				</select>
+			</div>
 
 			<div class="dashboard-layout flex gap-6">
 				<aside class="w-48 bg-white rounded-xl shadow p-4 space-y-3">
